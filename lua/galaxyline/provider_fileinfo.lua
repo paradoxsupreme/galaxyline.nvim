@@ -20,7 +20,7 @@ function M.get_current_file_name()
   end
   if vim.o.modifiable then
     if vim.bo.modified then
-      vim.api.nvim_command('hi GalaxyFileName guifg='.. colors.red)
+      vim.api.nvim_command('hi GalaxyFileName guifg=#D16969')
       return file .. '   '
     end
   end
