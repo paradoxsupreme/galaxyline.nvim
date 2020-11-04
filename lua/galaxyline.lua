@@ -25,6 +25,7 @@ local provider_group = {
   DiffModified = vcs.diff_modified,
   DiffRemove = vcs.diff_remove,
   LineColumn = fileinfo.line_column,
+  LineTLineColumn = fileinfo.line_tline_column,
   FileFormat = fileinfo.get_file_format,
   FileEncode = fileinfo.get_file_encode,
   FileSize = fileinfo.get_file_size,

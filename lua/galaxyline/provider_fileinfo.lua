@@ -68,6 +68,14 @@ function M.line_column()
   return line .. ':' .. column
 end
 
+-- show L: line/total lines C:column
+function M.line_tline_column()
+  local line = vim.fn.line('.')
+  local total_line = vim.fn.line('$')
+  local column = vim.fn.col('.')
+  return 'L: ' .. line .. '/' .. total_line .. ' C: ' .. column
+end
+
 -- show current line percent of all lines
 function M.current_line_percent()
   local current_line = vim.fn.line('.')
