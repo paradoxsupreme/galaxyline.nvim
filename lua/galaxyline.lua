@@ -19,6 +19,7 @@ local provider_group = {
   BufferIcon  = buffer.get_buffer_type_icon,
   BufferNumber = buffer.get_buffer_number,
   FileTypeName = buffer.get_buffer_filetype,
+  FileTypeNameLo = buffer.get_buffer_filetype_lo,
   GitBranch = vcs.get_git_branch,
   DiffAdd = vcs.diff_add,
   DiffModified = vcs.diff_modified,

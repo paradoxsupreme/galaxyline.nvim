@@ -35,4 +35,8 @@ function M.get_buffer_filetype()
   return vim.bo.filetype:upper()
 end
 
+function M.get_buffer_filetype()
+  return vim.bo.filetype()
+end
+
 return M
