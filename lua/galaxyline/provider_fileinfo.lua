@@ -86,9 +86,9 @@ function M.current_line_percent_tline()
   local current_line = vim.fn.line('.')
   local total_line = vim.fn.line('$')
   if current_line == 1 then
-    return ' Top '
+    return ' Top' .. total_line .. ' '
   elseif current_line == vim.fn.line('$') then
-    return ' Bot '
+    return ' Bot' .. total_line .. ' '
   end
   local result,_ = math.modf((current_line/total_line)*100)
   return ' '.. result .. '%/' .. total_line .. ' '
