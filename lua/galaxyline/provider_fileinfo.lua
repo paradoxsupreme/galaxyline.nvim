@@ -68,14 +68,6 @@ function M.line_column()
   return line .. ':' .. column
 end
 
--- show L: line/total lines C:column
-function M.line_tline_column()
-  local line = vim.fn.line('.')
-  local total_line = vim.fn.line('$')
-  local column = vim.fn.col('.')
-  return 'L: ' .. line .. '/' .. total_line .. ' C: ' .. column
-end
-
 -- show current line percent of all lines
 function M.current_line_percent()
   local current_line = vim.fn.line('.')
@@ -88,6 +80,20 @@ function M.current_line_percent()
   local result,_ = math.modf((current_line/total_line)*100)
   return ' '.. result .. '% '
 end
+
+-- show current line percent of all lines / total lines
+function M.current_line_percent_tline()
+  local current_line = vim.fn.line('.')
+  local total_line = vim.fn.line('$')
+  if current_line == 1 then
+    return ' Top '
+  elseif current_line == vim.fn.line('$') then
+    return ' Bot '
+  end
+  local result,_ = math.modf((current_line/total_line)*100)
+  return ' '.. result .. '%/' .. total_line .. ' '
+end
+
 
 local icon_colors = {
    Brown        = '#905532',
