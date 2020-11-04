@@ -20,11 +20,13 @@ function M.get_current_file_name()
   end
   if vim.o.modifiable then
     if vim.bo.modified then
+      vim.api.nvim_command('hi GalaxyFileName guifg='.. colors.red)
       return file .. '   '
     end
   end
   return file .. ' '
 end
+
 
 -- format print current file size
 function M.format_file_size(file)
