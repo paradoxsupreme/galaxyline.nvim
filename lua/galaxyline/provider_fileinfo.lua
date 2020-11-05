@@ -164,11 +164,11 @@ function M.get_file_icon()
   end
   if vim.o.modifiable then
     if vim.bo.modified then
-      vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_1")
+      vim.api.nvim_command("exe 'hi GalaxyFileIcon guifg=' . g:terminal_color_1")
       return icon .. ' '
     end
   end
-  vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_2")
+  vim.api.nvim_command("exe 'hi GalaxyFileIcon guifg=' . g:terminal_color_2")
   return icon .. ' '
 end
 
