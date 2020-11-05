@@ -24,7 +24,7 @@ function M.get_current_file_name()
       return file .. '   '
     end
   end
-      vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_2")
+  vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_2")
   return file .. ' '
 end
 
@@ -99,41 +99,41 @@ end
 
 
 local icon_colors = {
-   Brown        = '#905532',
-   Aqua         = '#3AFFDB',
-   Blue         = '#689FB6',
-   Darkblue     = '#44788E',
-   Purple       = '#834F79',
-   Red          = '#AE403F',
-   Beige        = '#F5C06F',
-   Yellow       = '#F09F17',
-   Orange       = '#D4843E',
-   Darkorange   = '#F16529',
-   Pink         = '#CB6F6F',
-   Salmon       = '#EE6E73',
-   Green        = '#8FAA54',
-   Lightgreen   = '#31B53E',
-   White        = '#FFFFFF',
-   LightBlue    = '#5fd7ff',
+  Brown        = '#905532',
+  Aqua         = '#3AFFDB',
+  Blue         = '#689FB6',
+  Darkblue     = '#44788E',
+  Purple       = '#834F79',
+  Red          = '#AE403F',
+  Beige        = '#F5C06F',
+  Yellow       = '#F09F17',
+  Orange       = '#D4843E',
+  Darkorange   = '#F16529',
+  Pink         = '#CB6F6F',
+  Salmon       = '#EE6E73',
+  Green        = '#8FAA54',
+  Lightgreen   = '#31B53E',
+  White        = '#FFFFFF',
+  LightBlue    = '#5fd7ff',
 }
 
 local icons = {
-    Brown        = {''},
-    Aqua         = {''},
-    LightBlue    = {'',''},
-    Blue         = {'','','','','','','','','','','','',''},
-    Darkblue     = {'',''},
-    Purple       = {'','','','',''},
-    Red          = {'','','','','',''},
-    Beige        = {'','',''},
-    Yellow       = {'','','λ','',''},
-    Orange       = {'',''},
-    Darkorange   = {'','','','',''},
-    Pink         = {'',''},
-    Salmon       = {''},
-    Green        = {'','','','','',''},
-    Lightgreen   = {'','',''},
-    White        = {'','','','','',''},
+  Brown        = {''},
+  Aqua         = {''},
+  LightBlue    = {'',''},
+  Blue         = {'','','','','','','','','','','','',''},
+  Darkblue     = {'',''},
+  Purple       = {'','','','',''},
+  Red          = {'','','','','',''},
+  Beige        = {'','',''},
+  Yellow       = {'','','λ','',''},
+  Orange       = {'',''},
+  Darkorange   = {'','','','',''},
+  Pink         = {'',''},
+  Salmon       = {''},
+  Green        = {'','','','','',''},
+  Lightgreen   = {'','',''},
+  White        = {'','','','','',''},
 }
 
 -- filetype or extensions : { colors ,icon}
@@ -162,6 +162,13 @@ function M.get_file_icon()
       icon = ''
     end
   end
+  if vim.o.modifiable then
+    if vim.bo.modified then
+      vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_1")
+      return icon .. ' '
+    end
+  end
+  vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_2")
   return icon .. ' '
 end
 
