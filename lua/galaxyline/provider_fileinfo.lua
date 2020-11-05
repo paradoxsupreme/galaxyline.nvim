@@ -20,11 +20,11 @@ function M.get_current_file_name()
   end
   if vim.o.modifiable then
     if vim.bo.modified then
-      vim.api.nvim_command(exe 'hi GalaxyFileName guifg=' . g:terminal_color_1)
+      vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_1")
       return file .. '   '
     end
   end
-      vim.api.nvim_command(exe 'hi GalaxyFileName guifg=' . g:terminal_color_2)
+      vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_2")
   return file .. ' '
 end
 
