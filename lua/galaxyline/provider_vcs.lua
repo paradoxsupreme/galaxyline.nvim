@@ -1,4 +1,4 @@
-local vim,api = vim,vim.api
+local vim= vim
 local common = require('galaxyline.common')
 local M = {}
 
@@ -60,7 +60,8 @@ function M.get_git_dir(path)
 
     -- Checks if provided directory contains git directory
     local function has_git_dir(dir)
-        if  common.is_dir(dir..'/.git') then return dir end
+        local git_dir = dir..'/.git'
+        if common.is_dir(git_dir) then return git_dir end
     end
 
     local function has_git_file(dir)
@@ -86,19 +87,49 @@ function M.get_git_dir(path)
         or (parent_path ~= path and M.get_git_dir(parent_path) or nil)
 end
 
+function M.check_git_workspace()
+  if vim.bo.buftype == 'terminal' then return false end
+  local current_file = vim.fn.expand('%:p')
+  local current_dir
+  -- if file is a symlinks
+  if vim.fn.getftype(current_file) == 'link' then
+    local real_file = vim.fn.resolve(current_file)
+    current_dir = vim.fn.fnamemodify(real_file,':h')
+  else
+    current_dir = vim.fn.expand('%:p:h')
+  end
+  local result = M.get_git_dir(current_dir)
+  if not result then return false end
+  return true
+end
+
 function M.get_git_branch()
   if vim.bo.filetype == 'help' then return end
-  local current_dir = vim.fn.expand('%:p:h')
-  local ok,gitbranch_pwd = pcall(vim.api.nvim_buf_get_var,0,'gitbranch_pwd')
-  local ok1,gitbranch_path = pcall(vim.api.nvim_buf_get_var,0,'gitbranch_path')
-  if ok and ok1 then
+  local current_file = vim.fn.expand('%:p')
+  local current_dir
+
+  -- if file is a symlinks
+  if vim.fn.getftype(current_file) == 'link' then
+    local real_file = vim.fn.resolve(current_file)
+    current_dir = vim.fn.fnamemodify(real_file,':h')
+  else
+    current_dir = vim.fn.expand('%:p:h')
+  end
+
+  local _,gitbranch_pwd = pcall(vim.api.nvim_buf_get_var,0,'gitbranch_pwd')
+  local _,gitbranch_path = pcall(vim.api.nvim_buf_get_var,0,'gitbranch_path')
+  if gitbranch_path and gitbranch_pwd then
     if gitbranch_path:find(current_dir) and string.len(gitbranch_pwd) ~= 0 then
       return  gitbranch_pwd
     end
   end
-  local git_root = M.get_git_dir(current_dir)
-  if not git_root then return end
-  local git_dir = git_root .. '/.git'
+  local git_dir = M.get_git_dir(current_dir)
+  if not git_dir then return end
+  local git_root
+  if not git_dir:find('/.git') then
+    git_root = git_dir
+  end
+  git_root = git_dir:gsub('/.git','')
 
   -- If git directory not found then we're probably outside of repo
   -- or something went wrong. The same is when head_file is nil
@@ -111,6 +142,7 @@ function M.get_git_branch()
   -- if HEAD matches branch expression, then we're on named branch
   -- otherwise it is a detached commit
   local branch_name = HEAD:match('ref: refs/heads/(.+)')
+  if branch_name == nil then return  end
 
   vim.api.nvim_buf_set_var(0,'gitbranch_pwd',branch_name)
   vim.api.nvim_buf_set_var(0,'gitbranch_path',git_root)
@@ -133,11 +165,11 @@ local function get_hunks_data()
     diff_data[2] = vim.fn['sy#repo#get_stats']()[2]
     diff_data[3] = vim.fn['sy#repo#get_stats']()[3]
     return diff_data
-  elseif vim.fn.exists('b:gitsigns_status_dict') == 1 then
-    local gitsigns_dict = vim.api.nvim_buf_get_var(0, 'gitsigns_status_dict')
-    diff_data[1] = gitsigns_dict['added']
-    diff_data[2] = gitsigns_dict['changed']
-    diff_data[3] = gitsigns_dict['removed']
+  elseif vim.fn.exists('b:gitsigns_status') == 1 then
+    local gitsigns_dict = vim.api.nvim_buf_get_var(0, 'gitsigns_status')
+    diff_data[1] = tonumber(gitsigns_dict:match('+?(%d+)')) or 0
+    diff_data[2] = tonumber(gitsigns_dict:match('%s~?(%d+)')) or 0
+    diff_data[3] = tonumber(gitsigns_dict:match('-(%d+)')) or 0
   end
   return diff_data
 end

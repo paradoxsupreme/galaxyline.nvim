@@ -2,10 +2,10 @@ local vim = vim
 local M = {}
 
 local function file_readonly()
-  if vim.o.filetype == 'help' then
+  if vim.bo.filetype == 'help' then
     return ''
   end
-  if vim.o.readonly == true then
+  if vim.bo.readonly == true then
     return " "
   end
   return ''
@@ -18,7 +18,7 @@ function M.get_current_file_name()
   if string.len(file_readonly()) ~= 0 then
     return file .. file_readonly()
   end
-  if vim.o.modifiable then
+  if vim.bo.modifiable then
     if vim.bo.modified then
       vim.api.nvim_command("exe 'hi GalaxyFileName guifg=' . g:terminal_color_1")
       return file .. '   '
@@ -55,13 +55,13 @@ end
 
 -- get file encode
 function M.get_file_encode()
-  local encode = vim.o.fenc ~= '' and vim.o.fenc or vim.o.enc
+  local encode = vim.bo.fenc ~= '' and vim.bo.fenc or vim.o.enc
   return ' ' .. encode
 end
 
 -- get file format
 function M.get_file_format()
-  return vim.o.fileformat
+  return vim.bo.fileformat
 end
 
 -- show line:column
@@ -132,7 +132,7 @@ local icons = {
     Pink         = {'',''},
     Salmon       = {''},
     Green        = {'','','','','',''},
-    Lightgreen   = {'','',''},
+    Lightgreen   = {'','','','﵂'},
     White        = {'','','','','',''},
 }
 
@@ -150,7 +150,7 @@ function M.get_file_icon()
     return icon .. ' '
   end
   local ok,devicons = pcall(require,'nvim-web-devicons')
-  if not ok then print('Does not found any icon plugin') return end
+  if not ok then print('No icon plugin found. Please install \'kyazdani42/nvim-web-devicons\'') return '' end
   local f_name,f_extension = vim.fn.expand('%:t'),vim.fn.expand('%:e')
   icon = devicons.get_icon(f_name,f_extension)
   if icon == nil then
